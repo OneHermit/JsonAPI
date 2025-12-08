@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+
+        function requestUserApi() {
+            axios({
+                url: 'https://raw.githubusercontent.com/OneHermit/JsonAPI/refs/heads/main/course/getHaoKanVideo.json'
+            }).then(res => {
+                console.log('接口响应：', res);
+            })
+        }
+        requestUserApi()
+    </script>
+</body>
+
+</html>
