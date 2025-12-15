@@ -18,25 +18,23 @@ export default async function onRequest(context) {
     const validPage = Math.max(1, isNaN(page) ? 1 : page); // 页码至少为 1
     const validSize = Math.max(1, Math.min(50, isNaN(size) ? 10 : size)); // 条数 1~50 之间
 
-    // ===================== 步骤2：读取静态 JSON 文件 =====================
-    // Cloudflare Pages 中，静态文件需放在 public 目录下（如 public/course/getHaokanVideos.json）
-    // 通过 context.env.ASSETS.fetch 读取静态资产（Cloudflare 内置绑定）
-
-    const jsonFileUrl = new URL('https://jsonapi-vdwkdcov.edgeone.cool/course/getHaokanVideos.json', request.url);
-    const assetResponse = await context.env.ASSETS.fetch(jsonFileUrl);
+    // ===================== 步骤2：读取远程 JSON 文件 =====================
+    const remoteUrl = 'https://jsonapi-vdwkdcov.edgeone.cool/course/getHaokanVideos.json';
+    const remoteResponse = await fetch(remoteUrl);
 
     // 处理文件读取失败的情况（如文件不存在、404 等）
-    if (!assetResponse.ok) {
-      throw new Error(`读取 JSON 文件失败：${assetResponse.status} ${assetResponse.statusText}`);
+    if (!remoteResponse.ok) {
+      throw new Error(`读取远程 JSON 文件失败：${remoteResponse.status} ${remoteResponse.statusText}`);
     }
 
     // 解析 JSON 数据（需确保文件内容是合法的 JSON 格式，推荐为数组）
-    const rawData = await assetResponse.json()['videos'];
+    const responseData = await remoteResponse.json();
+    const rawData = responseData.videos; // 根据您的 JSON 结构提取 videos 字段
 
     // ===================== 步骤3：分页处理数据 =====================
     // 校验数据类型：确保原始数据是数组（若 JSON 文件是对象，如 { "list": [...] }，则改为 rawData.list）
     if (!Array.isArray(rawData)) {
-      throw new Error('JSON 文件数据格式错误，需为数组类型');
+      throw new Error('JSON 文件数据格式错误，videos 字段需为数组类型');
     }
 
     const total = rawData.length; // 总数据条数
@@ -70,7 +68,8 @@ export default async function onRequest(context) {
       error: error.message // 错误信息（生产环境可隐藏，仅返回通用提示）
     }), {
       headers: {
-        'Content-Type': 'application/json; charset=utf-8'
+        'Content-Type': 'application/json; charset=utf-8',
+        'Access-Control-Allow-Origin': '*'
       },
       status: 500 // HTTP 状态码 500
     });
