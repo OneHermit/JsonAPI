@@ -21,6 +21,7 @@ export default async function onRequest(context) {
     // ===================== 步骤2：读取静态 JSON 文件 =====================
     // Cloudflare Pages 中，静态文件需放在 public 目录下（如 public/course/getHaokanVideos.json）
     // 通过 context.env.ASSETS.fetch 读取静态资产（Cloudflare 内置绑定）
+
     const jsonFileUrl = new URL('https://jsonapi-vdwkdcov.edgeone.cool/course/getHaokanVideos.json', request.url);
     const assetResponse = await context.env.ASSETS.fetch(jsonFileUrl);
 
