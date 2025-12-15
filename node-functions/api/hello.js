@@ -30,7 +30,7 @@ export default async function onRequest(context) {
     }
 
     // 解析 JSON 数据（需确保文件内容是合法的 JSON 格式，推荐为数组）
-    const rawData = await assetResponse.json();
+    const rawData = await assetResponse.json()['videos'];
 
     // ===================== 步骤3：分页处理数据 =====================
     // 校验数据类型：确保原始数据是数组（若 JSON 文件是对象，如 { "list": [...] }，则改为 rawData.list）
