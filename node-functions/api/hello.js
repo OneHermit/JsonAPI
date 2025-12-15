@@ -19,7 +19,8 @@ export default async function onRequest(context) {
     const validSize = Math.max(1, Math.min(50, isNaN(size) ? 10 : size)); // 条数 1~50 之间
 
     // ===================== 步骤2：读取远程 JSON 文件 =====================
-    const remoteUrl = 'https://jsonapi-vdwkdcov.edgeone.cool/course/getHaokanVideos.json';
+    // https://raw.githubusercontent.com/OneHermit/JsonAPI/refs/heads/main/course/getHaokanVideos.json
+    const remoteUrl = 'https://raw.githubusercontent.com/OneHermit/JsonAPI/refs/heads/main/course/getHaokanVideos.json';
     const remoteResponse = await fetch(remoteUrl);
 
     // 处理文件读取失败的情况（如文件不存在、404 等）
