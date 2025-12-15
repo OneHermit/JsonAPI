@@ -1,7 +1,14 @@
+// 文件路径 ./edge-functions/api/hello.js
+// 访问路径 example.com/api/hello
+// export default function onRequest(context) {
+//   return new Response('Hello from Edge Functions!');
+// }
+
+// 注意：因为涉及异步操作（fetch 读取文件），函数需声明为 async
 export default async function onRequest(context) {
   try {
     // ===================== 步骤1：解析并校验分页参数 =====================
-    const request = context.request || new Request('http://localhost'); // 本地调试兜底
+    const request = context.request;
     const url = new URL(request.url);
     // 从查询参数中获取 page 和 size，默认值分别为 1 和 10
     const page = parseInt(url.searchParams.get('page') || '1', 10);
@@ -11,26 +18,11 @@ export default async function onRequest(context) {
     const validPage = Math.max(1, isNaN(page) ? 1 : page); // 页码至少为 1
     const validSize = Math.max(1, Math.min(50, isNaN(size) ? 10 : size)); // 条数 1~50 之间
 
-    // ===================== 步骤2：读取静态 JSON 文件（跨平台兼容方式） =====================
-    // 方式1：使用相对 URL 直接 fetch（推荐，适配大部分平台：Cloudflare/Vercel/Netlify 等）
-    // 注意：JSON 文件需放在项目的静态资源目录（如 public/course/getHaokanVideos.json）
-    let assetResponse;
-    try {
-      // 构造 JSON 文件的完整 URL（相对路径转绝对路径）
-      const jsonFileUrl = new URL('/course/getHaokanVideos.json', request.url);
-      // 直接 fetch 静态文件（无需依赖平台专属 API）
-      assetResponse = await fetch(jsonFileUrl, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-        // 缓存策略（可选，根据需求调整：no-cache 每次获取最新，cache-first 缓存优先）
-        cache: 'no-cache'
-      });
-    } catch (err) {
-      // 方式2：本地调试兜底（若相对路径 fetch 失败，可替换为本地绝对路径/公网 URL）
-      // 注意：生产环境请注释掉这部分，仅用于本地测试
-      const localJsonUrl = 'https://jsonapi-vdwkdcov.edgeone.cool/course/getHaokanVideos.json'; // 本地静态服务地址
-      assetResponse = await fetch(localJsonUrl);
-    }
+    // ===================== 步骤2：读取静态 JSON 文件 =====================
+    // Cloudflare Pages 中，静态文件需放在 public 目录下（如 public/course/getHaokanVideos.json）
+    // 通过 context.env.ASSETS.fetch 读取静态资产（Cloudflare 内置绑定）
+    const jsonFileUrl = new URL('https://jsonapi-vdwkdcov.edgeone.cool/course/getHaokanVideos.json', request.url);
+    const assetResponse = await context.env.ASSETS.fetch(jsonFileUrl);
 
     // 处理文件读取失败的情况（如文件不存在、404 等）
     if (!assetResponse.ok) {
@@ -65,10 +57,7 @@ export default async function onRequest(context) {
     }), {
       headers: {
         'Content-Type': 'application/json; charset=utf-8', // 声明响应类型为 JSON
-        // 解决跨域问题（生产环境可改为指定域名，如 https://yourdomain.com）
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type'
+        'Access-Control-Allow-Origin': '*' // 解决跨域问题（生产环境可改为指定域名，如 https://yourdomain.com）
       }
     });
 
@@ -77,11 +66,10 @@ export default async function onRequest(context) {
     return new Response(JSON.stringify({
       code: 500,
       message: '数据获取失败',
-      error: error.message // 错误信息（生产环境可隐藏，仅返回通用提示：'服务器内部错误'）
+      error: error.message // 错误信息（生产环境可隐藏，仅返回通用提示）
     }), {
       headers: {
-        'Content-Type': 'application/json; charset=utf-8',
-        'Access-Control-Allow-Origin': '*'
+        'Content-Type': 'application/json; charset=utf-8'
       },
       status: 500 // HTTP 状态码 500
     });
