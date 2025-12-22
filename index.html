@@ -59,14 +59,21 @@
         }
 
         .api-status {
-            background-color: rgba(255, 255, 255, 0.2);
+            /* background-color: rgba(255, 255, 255, 0.2); */
             padding: 8px 16px;
             border-radius: 20px;
             font-size: 0.9rem;
             display: flex;
             align-items: center;
             backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            height: 100px;
+            /* border: 1px solid rgba(255, 255, 255, 0.3); */
+
+            width: 100%;
+            min-width: 320px;
+            /* 适配移动端，避免宽度为0 */
+            max-width: 728px;
+            /* 适配桌面端 */
         }
 
         .status-indicator {
@@ -702,17 +709,17 @@
                 </div>
                 <div class="api-status">
                     <!-- <span class="status-indicator"></span> -->
-                    <!-- API 运行正常 -->
-                    <script async
-                        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8576294465310211"
-                        crossorigin="anonymous"></script>
                     <!-- 标题头广告 -->
                     <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-8576294465310211"
                         data-ad-slot="8433120171" data-ad-format="auto" data-full-width-responsive="true"></ins>
-                    <script>
-                        (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
                 </div>
+                <!-- API 运行正常 -->
+                <script async
+                    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8576294465310211"
+                    crossorigin="anonymous"></script>
+                <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
             </div>
         </header>
 
