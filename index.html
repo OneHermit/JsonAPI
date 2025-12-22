@@ -1,14 +1,2002 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>前端开发 - API文档</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+
+        body {
+            background-color: #ffffff;
+            color: #333333;
+            line-height: 1.6;
+            padding: 20px;
+            background-image: linear-gradient(to bottom, #f9f7ff 0%, #ffffff 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1500px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(124, 58, 237, 0.1);
+            border: 1px solid #e9d5ff;
+        }
+
+        header {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            padding: 30px 40px;
+            border-bottom: 1px solid #ddd6fe;
+            color: white;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .api-status {
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            background-color: #10b981;
+            border-radius: 50%;
+            margin-right: 8px;
+            animation: pulse 2s infinite;
+        }
+
+        .qr-code-header {
+            width: 100px;
+            height: 100px;
+            border: 2px solid #8b5cf6;
+            border-radius: 8px;
+            padding: 3px;
+            background: white;
+            margin-bottom: 10px;
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.6;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .content-wrapper {
+            display: flex;
+            min-height: 600px;
+            position: relative;
+        }
+
+        @media (max-width: 900px) {
+            .content-wrapper {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #e9d5ff;
+                max-height: none;
+            }
+
+            .toolbar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #e9d5ff;
+            }
+
+            .menu-items {
+                display: flex;
+                flex-wrap: wrap;
+            }
+
+            .nav-item {
+                min-width: 200px;
+            }
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 30px 40px;
+            overflow-y: auto;
+        }
+
+        .sidebar-container {
+            display: flex;
+            flex-direction: column;
+            width: 320px;
+        }
+
+
+        .main-content {
+            flex: 1;
+            padding: 30px 40px;
+            overflow-y: auto;
+        }
+
+        .sidebar {
+            width: 320px;
+            background-color: #faf5ff;
+            padding: 25px 0;
+            border-right: 1px solid #e9d5ff;
+            overflow-y: auto;
+            max-height: 700px;
+        }
+
+        .toolbar {
+            width: 320px;
+            background-color: #f5f3ff;
+            padding: 20px 25px;
+            border-right: 1px solid #e9d5ff;
+            border-top: 1px solid #e9d5ff;
+        }
+
+        .toolbar-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #5b21b6;
+            margin-bottom: 15px;
+        }
+
+        .toolbar-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .toolbar-item {
+            display: inline-block;
+            padding: 8px 15px;
+            background-color: #8b5cf6;
+            color: white;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .toolbar-item:hover {
+            background-color: #7c3aed;
+        }
+
+        .qr-code-container {
+            text-align: center;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e9d5ff;
+        }
+
+        .qr-code {
+            width: 270px;
+            height: 270px;
+            border: 2px solid #8b5cf6;
+            border-radius: 8px;
+            padding: 5px;
+            background: white;
+        }
+
+        .menu-category {
+            margin-bottom: 15px;
+        }
+
+        .menu-header {
+            padding: 15px 25px;
+            font-weight: 600;
+            color: #5b21b6;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            border-left: 4px solid transparent;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+
+        .menu-header:hover {
+            background-color: rgba(139, 92, 246, 0.05);
+            color: #8b5cf6;
+        }
+
+        .menu-header.active {
+            background-color: rgba(139, 92, 246, 0.1);
+            border-left-color: #8b5cf6;
+            color: #7c3aed;
+        }
+
+        .menu-header .toggle-icon {
+            margin-left: auto;
+            transition: transform 0.3s ease;
+            font-size: 0.9rem;
+            color: #8b5cf6;
+        }
+
+        .menu-header.collapsed .toggle-icon {
+            transform: rotate(-90deg);
+        }
+
+        .menu-items {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .menu-header.active+.menu-items {
+            max-height: 1000px;
+        }
+
+        .nav-item {
+            padding: 12px 25px 12px 40px;
+            border-left: 4px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            color: #6b21a8;
+            font-size: 0.95rem;
+        }
+
+        .nav-item:hover {
+            background-color: rgba(139, 92, 246, 0.05);
+            color: #8b5cf6;
+        }
+
+        .nav-item.active {
+            background-color: rgba(139, 92, 246, 0.1);
+            border-left-color: #8b5cf6;
+            color: #7c3aed;
+            font-weight: 600;
+        }
+
+        .method-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-right: 10px;
+            width: 60px;
+            text-align: center;
+        }
+
+        .method-get {
+            background-color: rgba(34, 197, 94, 0.1);
+            color: #16a34a;
+            border: 1px solid rgba(34, 197, 94, 0.2);
+        }
+
+        .method-post {
+            background-color: rgba(59, 130, 246, 0.1);
+            color: #2563eb;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .method-put {
+            background-color: rgba(245, 158, 11, 0.1);
+            color: #d97706;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        .method-delete {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: #dc2626;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .nav-icon {
+            margin-right: 10px;
+            font-size: 1rem;
+            width: 18px;
+            text-align: center;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 30px 40px;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e9d5ff;
+            color: #5b21b6;
+        }
+
+        .method-display {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            font-size: 1rem;
+        }
+
+        .card {
+            background-color: #faf5ff;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border: 1px solid #e9d5ff;
+            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.05);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(124, 58, 237, 0.1);
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            color: #5b21b6;
+            display: flex;
+            align-items: center;
+        }
+
+        .card-title i {
+            margin-right: 10px;
+            color: #8b5cf6;
+        }
+
+        .param-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #e9d5ff;
+        }
+
+        .param-table th {
+            background-color: #8b5cf6;
+            color: white;
+            padding: 14px 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .param-table td {
+            padding: 15px;
+            border-bottom: 1px solid #e9d5ff;
+            background-color: white;
+        }
+
+        .param-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .param-table tr:hover td {
+            background-color: #faf5ff;
+        }
+
+        .param-name {
+            color: #7c3aed;
+            font-weight: 600;
+            font-family: 'Courier New', monospace;
+            background-color: #f3e8ff;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .param-type {
+            color: #059669;
+            font-family: 'Courier New', monospace;
+            font-weight: 500;
+        }
+
+        .param-default {
+            color: #d97706;
+            font-family: 'Courier New', monospace;
+            font-weight: 500;
+        }
+
+        .param-example {
+            color: #db2777;
+            font-family: 'Courier New', monospace;
+            font-weight: 500;
+        }
+
+        .code-block {
+            background-color: #1e1b4b;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 4px solid #8b5cf6;
+            overflow-x: auto;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #3730a3;
+        }
+
+        .language-tabs {
+            display: flex;
+            overflow-x: auto;
+        }
+
+        .language-tab {
+            padding: 6px 12px;
+            background-color: #3730a3;
+            color: #c7d2fe;
+            border-radius: 6px;
+            margin-right: 8px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+
+        .language-tab.active {
+            background-color: #8b5cf6;
+            color: white;
+            border-color: #c4b5fd;
+        }
+
+        .language-tab:hover {
+            background-color: #7c3aed;
+            color: white;
+        }
+
+        .copy-btn {
+            background-color: #3730a3;
+            border: 1px solid #4f46e5;
+            color: #c7d2fe;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: background-color 0.2s;
+        }
+
+        .copy-btn:hover {
+            background-color: #4f46e5;
+            color: white;
+        }
+
+        .code-content {
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #e2e8f0;
+        }
+
+        .keyword {
+            color: #f472b6;
+        }
+
+        .function {
+            color: #60a5fa;
+        }
+
+        .string {
+            color: #10b981;
+        }
+
+        .comment {
+            color: #94a3b8;
+        }
+
+        .number {
+            color: #f59e0b;
+        }
+
+        .response-section {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .response-code {
+            background: linear-gradient(to right, #8b5cf6, #7c3aed);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            margin-right: 15px;
+            font-size: 1.1rem;
+            box-shadow: 0 2px 4px rgba(139, 92, 246, 0.3);
+        }
+
+        .response-type {
+            color: #5b21b6;
+            font-size: 1.1rem;
+            font-weight: 500;
+            background-color: #f3e8ff;
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: 1px solid #ddd6fe;
+        }
+
+        .json-block {
+            background-color: #1e1b4b;
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid #3730a3;
+            font-family: 'Courier New', monospace;
+            line-height: 1.5;
+            color: #e2e8f0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .json-key {
+            color: #c4b5fd;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #e9d5ff;
+        }
+
+        .page-link {
+            display: flex;
+            align-items: center;
+            color: #7c3aed;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: 1px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .page-link:hover {
+            color: #5b21b6;
+            background-color: #f3e8ff;
+            border-color: #ddd6fe;
+        }
+
+        .page-link i {
+            margin: 0 8px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #6b7280;
+            font-size: 0.9rem;
+            border-top: 1px solid #e9d5ff;
+            margin-top: 30px;
+            background-color: #faf5ff;
+        }
+
+        /* 紫色主题的装饰元素 */
+        .purple-accent {
+            color: #8b5cf6;
+        }
+
+        .purple-bg-light {
+            background-color: #faf5ff;
+        }
+
+        .purple-border {
+            border-color: #e9d5ff;
+        }
+
+        .purple-shadow {
+            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.1);
+        }
+
+        .qr-code-corner {
+            position: absolute;
+            top: 20px;
+            right: 41px;
+            width: 100px;
+            height: 100px;
+            border: 2px solid #8b5cf6;
+            border-radius: 8px;
+            padding: 3px;
+            background: white;
+            z-index: 10;
+        }
+
+        @media (max-width: 600px) {
+
+            header,
+            .main-content {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .header-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .api-status {
+                margin-top: 15px;
+            }
+
+            .card {
+                padding: 20px;
+            }
+        }
+
+        /* 紫色渐变装饰 */
+        .decorative-element {
+            position: fixed;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.1) 0%, rgba(139, 92, 246, 0) 70%);
+            z-index: -1;
+        }
+
+        .decorative-element-1 {
+            top: 5%;
+            right: 5%;
+        }
+
+        .decorative-element-2 {
+            bottom: 10%;
+            left: 5%;
+            background: radial-gradient(circle, rgba(124, 58, 237, 0.08) 0%, rgba(124, 58, 237, 0) 70%);
+        }
+    </style>
 </head>
 
 <body>
-    hello Json Api
+    <!-- 装饰元素 -->
+    <div class="decorative-element decorative-element-1"></div>
+    <div class="decorative-element decorative-element-2"></div>
+
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <div>
+                    <h1>前端开发</h1>
+                    <p class="subtitle">API 文档 - 支持多层级菜单</p>
+                </div>
+                <div class="api-status">
+                    <!-- <span class="status-indicator"></span> -->
+                    <!-- API 运行正常 -->
+                    <script async
+                        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8576294465310211"
+                        crossorigin="anonymous"></script>
+                    <!-- 标题头广告 -->
+                    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-8576294465310211"
+                        data-ad-slot="8433120171" data-ad-format="auto" data-full-width-responsive="true"></ins>
+                    <script>
+                        (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+                </div>
+            </div>
+        </header>
+
+        <div class="content-wrapper">
+            <div class="sidebar-container">
+                <div class="sidebar" id="sidebar">
+                    <!-- 菜单将通过JavaScript动态生成 -->
+                </div>
+
+                <!-- 工具栏放在菜单盒子的后面（下方） -->
+                <div class="toolbar" id="toolbar">
+                    <div class="toolbar-title">开发工具</div>
+                    <div class="toolbar-items">
+                        <!-- 工具栏项将通过JavaScript动态生成 -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="main-content" id="main-content">
+                <!-- 内容将通过JavaScript动态加载 -->
+                <img src="https://avatar.bdstatic.com/it/u=2664434043,2728946303&fm=3012&app=3012&autime=1756203629&size=b200,200"
+                    alt="二维码" class="qr-code-corner">
+            </div>
+        </div>
+
+        <footer>
+            <p>© 2023 前端开发 API 文档 | 最后更新: 2023年11月</p>
+        </footer>
+    </div>
+
+    <!-- API数据模板 -->
+    <template id="api-template">
+        <div class="method-display" data-bind="method-display"></div>
+        <h2 class="section-title" data-bind="title">API标题</h2>
+
+        <div class="card">
+            <h3 class="card-title"><i class="fas fa-list"></i> 请求参数</h3>
+            <p data-bind="param-description">此接口支持以下参数：</p>
+
+            <table class="param-table" data-bind="params">
+                <!-- 参数表格将通过JavaScript动态生成 -->
+            </table>
+        </div>
+
+        <div class="card">
+            <h3 class="card-title"><i class="fas fa-code"></i> 请求示例代码</h3>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <div class="language-tabs">
+                        <div class="language-tab active">Fetch</div>
+                        <div class="language-tab">jQuery</div>
+                        <div class="language-tab">Axios</div>
+                        <div class="language-tab">Python</div>
+                    </div>
+                    <button class="copy-btn">
+                        <i class="fas fa-copy"></i> 复制代码
+                    </button>
+                </div>
+
+                <div class="code-content">
+                    <pre data-bind="code-javascript">// JavaScript代码示例</pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3 class="card-title"><i class="fas fa-reply"></i> 返回响应</h3>
+
+            <div class="response-section">
+                <div class="response-code" data-bind="response-code">200 成功</div>
+                <div class="response-type" data-bind="response-type">application/json</div>
+            </div>
+
+            <div class="json-block">
+                <pre data-bind="response-json">{
+                        "status": 200,
+                        "message": "请求成功",
+                        "data": {}
+                    }</pre>
+            </div>
+        </div>
+
+        <div class="pagination">
+            <a href="#" class="page-link prev-link" data-bind="prev-link">
+                <i class="fas fa-arrow-left"></i>
+                <span data-bind="prev-text">上一页</span>
+            </a>
+            <a href="#" class="page-link next-link" data-bind="next-link">
+                <span data-bind="next-text">下一页</span>
+                <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+    </template>
+
+    <script>
+        // 菜单配置数据
+        const menuConfig = [
+            {
+                id: 'get-apis',
+                name: 'GET API',
+                icon: 'fas fa-download',
+                items: [
+                    {
+                        id: 'get-all-video',
+                        name: '获取全部视频',
+                        method: 'GET',
+                        icon: 'fas fa-list'
+                    },
+                    {
+                        id: 'get-gaoxiao-video',
+                        name: '获取搞笑视频',
+                        method: 'GET',
+                        icon: 'fas fa-play-circle'
+                    },
+                    {
+                        id: 'get-yingshi-video',
+                        name: '获取影视视频',
+                        method: 'GET',
+                        icon: 'fas fa-film'
+                    },
+                    {
+                        id: 'get-meishi-video',
+                        name: '获取美食视频',
+                        method: 'GET',
+                        icon: 'fas fa-utensils'
+                    },
+                    {
+                        id: 'get-junshi-video',
+                        name: '获取军事视频',
+                        method: 'GET',
+                        icon: 'fas fa-shield-alt'
+                    },
+                    {
+                        id: 'get-dongman-video',
+                        name: '获取动漫视频',
+                        method: 'GET',
+                        icon: 'fas fa-gamepad'
+                    }
+                ]
+            },
+            {
+                id: 'post-apis',
+                name: 'POST API',
+                icon: 'fas fa-upload',
+                items: [
+                    {
+                        id: 'post-user-login',
+                        name: '用户登录',
+                        method: 'POST',
+                        icon: 'fas fa-sign-in-alt'
+                    },
+                    {
+                        id: 'post-user-register',
+                        name: '用户注册',
+                        method: 'POST',
+                        icon: 'fas fa-user-plus'
+                    },
+                    {
+                        id: 'post-video-upload',
+                        name: '视频上传',
+                        method: 'POST',
+                        icon: 'fas fa-cloud-upload-alt'
+                    },
+                    {
+                        id: 'post-comment-add',
+                        name: '添加评论',
+                        method: 'POST',
+                        icon: 'fas fa-comment'
+                    },
+                    {
+                        id: 'post-video-like',
+                        name: '点赞视频',
+                        method: 'POST',
+                        icon: 'fas fa-heart'
+                    }
+                ]
+            },
+            {
+                id: 'other-apis',
+                name: '其他API',
+                icon: 'fas fa-cogs',
+                items: [
+                    {
+                        id: 'put-user-update',
+                        name: '更新用户信息',
+                        method: 'PUT',
+                        icon: 'fas fa-user-edit'
+                    },
+                    {
+                        id: 'delete-user',
+                        name: '删除用户',
+                        method: 'DELETE',
+                        icon: 'fas fa-user-minus'
+                    },
+                    {
+                        id: 'get-statistics',
+                        name: '获取统计数据',
+                        method: 'GET',
+                        icon: 'fas fa-chart-bar'
+                    }
+                ]
+            }
+        ];
+
+        // API模拟数据
+        const apiData = {
+            'get-all-video': {
+                title: '获取全部视频',
+                method: 'GET',
+                paramDescription: '接口链接：https://m1.apifoxmock.com/m1/7510026-7245733-default/getAllVideos',
+                params: [
+                    { name: 'page', type: 'Integer', description: '页码，从1开始', defaultValue: '1', example: '1' },
+                    { name: 'size', type: 'Integer', description: '每页数据条数', defaultValue: '10', example: '10' }
+                ],
+                code: {
+                    jquery: `// 获取全部视频 - jQuery示例
+var settings = {
+   "url": "https://m1.apifoxmock.com/m1/7510026-7245733-default/getAllVideos?page=1&size=10",
+   "method": "GET",
+   "timeout": 0,
+};
+
+$.ajax(settings).done(function (response) {
+   console.log(response);
+});`,
+                    fetch: `// 获取全部视频 - Fetch示例
+var requestOptions = {
+   method: 'GET',
+   redirect: 'follow'
+};
+
+fetch("https://m1.apifoxmock.com/m1/7510026-7245733-default/getAllVideos?page=1&size=10", requestOptions)
+   .then(response => response.text())
+   .then(result => console.log(result))
+   .catch(error => console.log('error', error));`,
+                    axios: `// 获取全部视频 - Axios示例
+var axios = require('axios');
+
+var config = {
+   method: 'get',
+   url: 'https://m1.apifoxmock.com/m1/7510026-7245733-default/getAllVideos?page=1&size=10',
+   headers: { }
+};
+
+axios(config)
+.then(function (response) {
+   console.log(JSON.stringify(response.data));
+})`,
+                    python: `# 获取全部视频 - Python示例
+import http.client
+
+conn = http.client.HTTPSConnection("")
+payload = ''
+headers = {}
+conn.request("GET", "https://m1.apifoxmock.com/m1/7510026-7245733-default/getAllVideos?page=1&size=10", payload, headers)
+res = conn.getresponse()
+data = res.read()
+print(data.decode("utf-8"))`,
+                },
+                responseCode: '200 成功',
+                responseType: 'application/json',
+                responseJson: `{
+    "code": 200,
+    "message": "success",
+    "data": {
+        "videos": [
+            {
+                "title": "这段相声绝了！张鹤伦梗多实力强！",
+                "userName": "小小小太阳哦",
+                "userPic": "https://avatar.bdstatic.com/it/",
+                "playUrl": "https://vd3.bdstatic.com",
+                "posterPic": "https://f7.baidu.com/it/u=3357675966,3320378888&fm"
+            },
+            {
+                "title": "“监控下的离谱瞬间”我是万万不敢相信啊！",
+                "userName": "剧讲日常",
+                "userPic": "https://avatar.bdstatic.com/it/",
+                "playUrl": "https://vd3.bdstatic.com",
+                "posterPic": "https://f7.baidu.com/it/u=3357675966,3320378888&fm"
+            }
+        ],
+        "pagination": {
+            "currentPage": 1,
+            "pageSize": 10,
+            "total": 60,
+            "totalPages": 6
+        }
+    }
+}`,
+                prevText: '首页',
+                nextText: '获取搞笑视频'
+            },
+            'get-gaoxiao-video': {
+                title: '获取搞笑视频',
+                method: 'GET',
+                paramDescription: '接口链接：https://m1.apifoxmock.com/m1/7510026-7245733-default/getGaoXiaoVideos',
+                params: [
+                    { name: 'page', type: 'Integer', description: '页码，从1开始', defaultValue: '1', example: '1' },
+                    { name: 'size', type: 'Integer', description: '每页数据条数', defaultValue: '10', example: '10' }
+                ],
+                code: {
+                    jquery: `// 获取搞笑视频 - jQuery示例
+var settings = {
+   "url": "/getGaoXiaoVideos?page=1&size=10",
+   "method": "GET",
+   "timeout": 0,
+};
+
+$.ajax(settings).done(function (response) {
+   console.log(response);
+});`,
+                    fetch: `// 获取搞笑视频 - Fetch示例
+var requestOptions = {
+   method: 'GET',
+   redirect: 'follow'
+};
+
+fetch("/getGaoXiaoVideos?page=1&size=10", requestOptions)
+   .then(response => response.text())
+   .then(result => console.log(result))
+   .catch(error => console.log('error', error));`,
+                    axios: `// 获取搞笑视频 - Axios示例
+var axios = require('axios');
+
+var config = {
+   method: 'get',
+   url: '/getGaoXiaoVideos?page=1&size=10',
+   headers: { }
+};
+
+axios(config)
+.then(function (response) {
+   console.log(JSON.stringify(response.data));
+})`,
+                    python: `# 获取搞笑视频 - Python示例
+import http.client
+
+conn = http.client.HTTPSConnection("")
+payload = ''
+headers = {}
+conn.request("GET", "/getGaoXiaoVideos?page=1&size=10", payload, headers)
+res = conn.getresponse()
+data = res.read()
+print(data.decode("utf-8"))`,
+                },
+                responseCode: '200 成功',
+                responseType: 'application/json',
+                responseJson: `{
+    "code": 200,
+    "message": "success",
+    "data": {
+        "videos": [
+            {
+                "title": "这段相声绝了！张鹤伦梗多实力强！",
+                "userName": "小小小太阳哦",
+                "userPic": "https://avatar.bdstatic.com/it/",
+                "playUrl": "https://vd3.bdstatic.com",
+                "posterPic": "https://f7.baidu.com/it/u=3357675966,3320378888&fm"
+            },
+            {
+                "title": "“监控下的离谱瞬间”我是万万不敢相信啊！",
+                "userName": "剧讲日常",
+                "userPic": "https://avatar.bdstatic.com/it/",
+                "playUrl": "https://vd3.bdstatic.com",
+                "posterPic": "https://f7.baidu.com/it/u=3357675966,3320378888&fm"
+            }
+        ],
+        "pagination": {
+            "currentPage": 1,
+            "pageSize": 10,
+            "total": 60,
+            "totalPages": 6
+        }
+    }
+}`,
+                prevText: '获取全部视频',
+                nextText: '获取影视视频'
+            },
+            'get-yingshi-video': {
+                title: '获取影视视频',
+                method: 'GET',
+                paramDescription: '接口链接：https://m1.apifoxmock.com/m1/7510026-7245733-default/getYingShiVideos',
+                params: [
+                    { name: 'page', type: 'Integer', description: '页码', defaultValue: '1', example: '1' },
+                    { name: 'size', type: 'Integer', description: '每页条数', defaultValue: '10', example: '10' }
+                ],
+                code: {
+                    fetch: `// 获取影视视频 - Fetch示例
+var requestOptions = {
+    method: 'GET',
+    redirect: 'follow'
+};
+
+fetch("/getYingShiVideos?page=1&size=10", requestOptions)
+    .then(response => response.text())
+    .then(result => console.log(result))
+    .catch(error => console.log('error', error));`,
+                    jquery: `// 获取影视视频 - jQuery示例
+var settings = {
+   "url": "/getYingShiVideos?page=1&size=10",
+   "method": "GET",
+   "timeout": 0,
+};
+
+$.ajax(settings).done(function (response) {
+   console.log(response);
+});`,
+                    axios: `// 获取影视视频 - Axios示例
+var axios = require('axios');
+
+var config = {
+   method: 'get',
+   url: '/getYingShiVideos?page=1&size=10',
+   headers: { }
+};
+
+axios(config)
+    .then(function (response) {
+        console.log(JSON.stringify(response.data));
+    }).catch(function (error) {
+        console.log(error);
+    });`,
+                    python: `# 获取影视视频 - Python示例
+import http.client
+
+conn = http.client.HTTPSConnection("")
+payload = ''
+headers = {}
+conn.request("GET", "/getYingShiVideos?page=1&size=10", payload, headers)
+res = conn.getresponse()
+data = res.read()
+print(data.decode("utf-8"))`
+                },
+                responseCode: '200 成功',
+                responseType: 'application/json',
+                responseJson: `{
+    "code": 200,
+    "message": "success",
+    "data": {
+        "videos": [
+            {
+                "title": "《流浪地球2》精彩片段",
+                "userName": "电影推荐官",
+                "userPic": "https://avatar.bdstatic.com/it/",
+                "playUrl": "https://vd3.bdstatic.com",
+                "posterPic": "https://f7.baidu.com/it/u=3357675966,3320378888&fm"
+            }
+        ],
+        "pagination": {
+            "currentPage": 1,
+            "pageSize": 10,
+            "total": 45,
+            "totalPages": 5
+        }
+    }
+}`,
+                prevText: '获取搞笑视频',
+                nextText: '获取美食视频'
+            },
+            'get-meishi-video': {
+                title: '获取美食视频',
+                method: 'GET',
+                paramDescription: '接口链接：https://m1.apifoxmock.com/m1/7510026-7245733-default/getMeiShiVideos',
+                params: [
+                    { name: 'page', type: 'Integer', description: '页码', defaultValue: '1', example: '1' },
+                    { name: 'size', type: 'Integer', description: '每页条数', defaultValue: '10', example: '10' }
+                ],
+                code: {
+                    fetch: `// 获取美食视频 - fetch示例
+var requestOptions = {
+   method: 'GET',
+   redirect: 'follow'
+};
+
+fetch("/getMeiShiVideos?page=1&size=10", requestOptions)
+   .then(response => response.text())
+   .then(result => console.log(result))
+   .catch(error => console.log('error', error));`,
+                    jquery: `// 获取美食视频 - jQuery示例
+var settings = {
+   "url": "/getMeiShiVideos?page=1&size=10",
+   "method": "GET",
+   "timeout": 0,
+};
+
+$.ajax(settings).done(function (response) {
+   console.log(response);
+});`,
+                    axios: `// 获取美食视频 - axios示例
+var axios = require('axios');
+
+var config = {
+   method: 'get',
+   url: '/getMeiShiVideos?page=1&size=10',
+   headers: { }
+};
+
+axios(config)
+    .then(function (response) {
+        console.log(JSON.stringify(response.data));
+    }).catch(function (error) {
+        console.log(error);
+    });`,
+                    python: `// 获取美食视频 - Python示例
+import http.client
+
+conn = http.client.HTTPSConnection("")
+payload = ''
+headers = {}
+conn.request("GET", "/getMeiShiVideos?page=1&size=10", payload, headers)
+res = conn.getresponse()
+data = res.read()
+print(data.decode("utf-8"))`
+
+                },
+                responseCode: '200 成功',
+                responseType: 'application/json',
+                responseJson: `{
+    "code": 200,
+    "message": "success",
+    "data": {
+        "videos": [
+            {
+                "title": "正宗川菜制作全过程",
+                "userName": "美食达人",
+                "userPic": "https://avatar.bdstatic.com/it/",
+                "playUrl": "https://vd3.bdstatic.com",
+                "posterPic": "https://f7.baidu.com/it/u=3357675966,3320378888&fm"
+            }
+        ],
+        "pagination": {
+            "currentPage": 1,
+            "pageSize": 10,
+            "total": 40,
+            "totalPages": 4
+        }
+    }
+}`,
+                prevText: '获取影视视频',
+                nextText: '获取军事视频'
+            },
+            'get-junshi-video': {
+                title: '获取军事视频',
+                method: 'GET',
+                paramDescription: '接口链接：https://m1.apifoxmock.com/m1/7510026-7245733-default/getJunShiVideos',
+                params: [
+                    { name: 'page', type: 'Integer', description: '页码', defaultValue: '1', example: '1' },
+                    { name: 'size', type: 'Integer', description: '每页条数', defaultValue: '10', example: '10' }
+                ],
+                code: {
+                    fetch: `// 获取军事视频 - fetch示例
+var requestOptions = {
+   method: 'GET',
+   redirect: 'follow'
+};
+
+fetch("/getJunShiVideos?page=1&size=10", requestOptions)
+   .then(response => response.text())
+   .then(result => console.log(result))
+   .catch(error => console.log('error', error));`,
+                    axios: `// 获取军事视频 - axios示例
+var axios = require('axios');
+
+var config = {
+   method: 'get',
+   url: '/getJunShiVideos?page=1&size=10',
+   headers: { }
+};
+
+axios(config)
+.then(function (response) {
+   console.log(JSON.stringify(response.data));
+})
+.catch(function (error) {
+   console.log(error);
+});`,
+                    jquery: `// 获取军事视频 - jQuery示例
+var settings = {
+   "url": "/getJunShiVideos?page=1&size=10",
+   "method": "GET",
+   "timeout": 0,
+};
+
+$.ajax(settings).done(function (response) {
+   console.log(response);
+});`,
+                    python: `// 获取军事视频 - Python示例
+import http.client
+
+conn = http.client.HTTPSConnection("")
+payload = ''
+headers = {}
+conn.request("GET", "/getJunShiVideos?page=1&size=10", payload, headers)
+res = conn.getresponse()
+data = res.read()
+print(data.decode("utf-8"))`
+
+                },
+                responseCode: '200 成功',
+                responseType: 'application/json',
+                responseJson: `{
+    "code": 200,
+    "message": "success",
+    "data": {
+        "videos": [
+            {
+                "title": "军事演习精彩瞬间",
+                "userName": "军迷小张",
+                "userPic": "https://avatar.bdstatic.com/it/",
+                "playUrl": "https://vd3.bdstatic.com",
+                "posterPic": "https://f7.baidu.com/it/u=3357675966,3320378888&fm"
+            }
+        ],
+        "pagination": {
+            "currentPage": 1,
+            "pageSize": 10,
+            "total": 30,
+            "totalPages": 3
+        }
+    }
+}`,
+                prevText: '获取美食视频',
+                nextText: '获取动漫视频'
+            },
+            'get-dongman-video': {
+                title: '获取动漫视频',
+                method: 'GET',
+                paramDescription: '接口链接：https://m1.apifoxmock.com/m1/7510026-7245733-default/getDongManVideos',
+                params: [
+                    { name: 'page', type: 'Integer', description: '页码', defaultValue: '1', example: '1' },
+                    { name: 'size', type: 'Integer', description: '每页条数', defaultValue: '10', example: '10' }
+                ],
+                code: {
+                    fetch: `// 设置 - fetch示例
+var requestOptions = {
+   method: 'GET',
+   redirect: 'follow'
+};
+
+fetch("/getDongManVideos?page=1&size=10", requestOptions)
+   .then(response => response.text())
+   .then(result => console.log(result))
+   .catch(error => console.log('error', error));`,
+                    axios: `// 设置 - axios示例
+var axios = require('axios');
+
+var config = {
+   method: 'get',
+   url: '/getDongManVideos?page=1&size=10',
+   headers: { }
+};
+
+axios(config)
+.then(function (response) {
+   console.log(JSON.stringify(response.data));
+})
+.catch(function (error) {
+   console.log(error);
+});`,
+                    jquery: `// 设置 - jQuery示例
+var settings = {
+   "url": "/getDongManVideos?page=1&size=10",
+   "method": "GET",
+   "timeout": 0,
+};
+
+$.ajax(settings).done(function (response) {
+   console.log(response);
+});`,
+                    python: `// 设置 - Python示例
+import http.client
+
+conn = http.client.HTTPSConnection("");
+payload = '';
+headers = {}
+conn.request("GET", "/getDongManVideos?page=1&size=10", payload, headers);
+res = conn.getresponse();
+data = res.read();
+print(data.decode("utf-8"));`
+
+                },
+                responseCode: '200 成功',
+                responseType: 'application/json',
+                responseJson: `{
+    "code": 200,
+    "message": "success",
+    "data": {
+        "videos": [
+            {
+                "title": "火影忍者最新剧情解读",
+                "userName": "动漫爱好者",
+                "userPic": "https://avatar.bdstatic.com/it/",
+                "playUrl": "https://vd3.bdstatic.com",
+                "posterPic": "https://f7.baidu.com/it/u=3357675966,3320378888&fm"
+            }
+        ],
+        "pagination": {
+            "currentPage": 1,
+            "pageSize": 10,
+            "total": 25,
+            "totalPages": 3
+        }
+    }
+}`,
+                prevText: '获取军事视频',
+                nextText: 'API文档首页'
+            },
+            'post-user-login': {
+                title: '用户登录',
+                method: 'POST',
+                paramDescription: '接口链接：https://m1.apifoxmock.com/m1/7510026-7245733-default/user/login',
+                params: [
+                    { name: 'username', type: 'String', description: '用户名', defaultValue: '无', example: 'admin、user01、test01' },
+                    { name: 'password', type: 'String', description: '密码', defaultValue: '无', example: '123456、654321、654321' }
+                ],
+                code: {
+                    fetch: `// 用户登录 - Fetch示例
+var requestOptions = {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+        username: 'user123',
+        password: 'password123',
+        remember: true
+    }),
+    redirect: 'follow'
+};
+
+fetch("/user/login", requestOptions)
+    .then(response => response.json())
+    .then(result => console.log(result))
+    .catch(error => console.log('error', error));`,
+                    jquery: `// 用户登录 - jQuery示例
+var settings = {
+    "url": "/user/login",
+    "method": "POST",
+    "timeout": 0,
+    "headers": {
+        "Content-Type": "application/json"
+    },
+    "data": JSON.stringify({
+        "username": "user123",
+        "password": "password123",
+        "remember": true
+    }),
+};
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});`,
+                    axios: `// 用户登录 - Axios示例
+    axios(
+        'https://m1.apifoxmock.com/m1/7510026-7245733-default/user/login/user/login',
+        {
+            "username": "admin",
+            "password": "123456"
+        }
+    ).then(function (response) {
+        console.log(JSON.stringify(response.data));
+    }).catch(function (error) {
+        console.log(error);
+    });`,
+                    python: `# 用户登录 - Python示例
+import http.client
+import json
+
+conn = http.client.HTTPSConnection("")
+payload = json.dumps({
+    "username": "user123",
+    "password": "password123",
+    "remember": True
+})
+headers = {
+    'Content-Type': 'application/json'
+}
+conn.request("POST", "/user/login", payload, headers)
+res = conn.getresponse()
+data = res.read()
+print(data.decode("utf-8"))`
+                },
+                responseCode: '200 成功',
+                responseType: 'application/json',
+                responseJson: `{
+    "code": 200,
+    "message": "登录成功",
+    "data": {
+        "userId": "123456",
+        "username": "user123",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+        "expiresIn": 3600
+    }
+}`,
+                prevText: '获取动漫视频',
+                nextText: '用户注册'
+            }
+        };
+
+        // 填充其他API数据
+        const defaultApiData = {
+            title: 'API文档',
+            method: 'POST',
+            paramDescription: '接口链接：待开发',
+            params: [],
+            code: {
+                fetch: '// 请选择一个API查看代码示例',
+                jquery: '// 请选择一个API查看代码示例',
+                axios: '// 请选择一个API查看代码示例',
+                python: '# 请选择一个API查看代码示例'
+            },
+            responseCode: '200 成功',
+            responseType: 'application/json',
+            responseJson: '{\n  "message": "请选择一个API查看响应示例"\n}',
+            prevText: '首页',
+            nextText: '下一个'
+        };
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function () {
+            const mainContent = document.getElementById('main-content');
+            const sidebar = document.getElementById('sidebar');
+            const template = document.getElementById('api-template');
+
+            // 生成菜单
+            generateMenu();
+
+            // 生成工具栏
+            generateToolbar();
+
+            // 加载默认API
+            loadApiData('get-all-video');
+
+            // 生成菜单的函数
+            function generateMenu() {
+                let menuHTML = '';
+
+                menuConfig.forEach((category, index) => {
+                    // 只有第一个菜单默认展开（active），其余默认闭合（不加active类）
+                    const isActive = index === 0 ? 'active' : '';
+                    const isCollapsed = index === 0 ? '' : 'collapsed';
+
+                    menuHTML += `
+                        <div class="menu-category">
+                            <div class="menu-header ${isActive} ${isCollapsed}" data-category="${category.id}">
+                                <i class="nav-icon ${category.icon}"></i>
+                                <span>${category.name}</span>
+                                <i class="toggle-icon fas fa-chevron-down"></i>
+                            </div>
+                            <div class="menu-items">
+                    `;
+
+                    category.items.forEach(item => {
+                        const methodClass = `method-${item.method.toLowerCase()}`;
+                        menuHTML += `
+                            <div class="nav-item" data-api="${item.id}">
+                                <span class="method-badge ${methodClass}">${item.method}</span>
+                                <i class="nav-icon ${item.icon}"></i>
+                                <span>${item.name}</span>
+                            </div>
+                        `;
+                    });
+
+                    menuHTML += `
+                            </div>
+                        </div>
+                    `;
+                });
+
+                sidebar.innerHTML = menuHTML;
+
+                // 添加菜单点击事件
+                const menuHeaders = document.querySelectorAll('.menu-header');
+                menuHeaders.forEach(header => {
+                    header.addEventListener('click', function () {
+                        const categoryId = this.getAttribute('data-category');
+
+                        // 切换当前分类的展开/折叠状态
+                        this.classList.toggle('collapsed');
+
+                        // 切换active状态
+                        const isActive = this.classList.contains('active');
+                        if (isActive) {
+                            this.classList.remove('active');
+                        } else {
+                            this.classList.add('active');
+                        }
+                    });
+                });
+
+                // 添加API项点击事件
+                const navItems = document.querySelectorAll('.nav-item');
+                navItems.forEach(item => {
+                    item.addEventListener('click', function () {
+                        const apiId = this.getAttribute('data-api');
+
+                        // 更新导航项状态
+                        navItems.forEach(nav => nav.classList.remove('active'));
+                        this.classList.add('active');
+
+                        // 加载对应的API数据
+                        loadApiData(apiId);
+                    });
+                });
+            }
+
+            // 生成工具栏的函数
+            function generateToolbar() {
+                const toolbar = document.getElementById('toolbar');
+                const toolbarItems = toolbar.querySelector('.toolbar-items');
+
+                // 工具栏配置数据
+                const toolbarConfig = [
+                    { name: '技术文档', link: 'https://www.w3school.com.cn/html/index.asp' },
+                    { name: '在线编辑器', link: 'https://codepen.io' },
+                    { name: 'API测试工具', link: 'https://www.postman.com' },
+                    { name: 'curl转化', link: 'https://tool.tushuoit.com/curlconverter/index.html' }
+                ];
+
+                let itemsHTML = '';
+
+                toolbarConfig.forEach(item => {
+                    itemsHTML += `<a href="${item.link}" target="_blank" class="toolbar-item">${item.name}</a>`;
+                });
+
+                toolbarItems.innerHTML = itemsHTML;
+            }
+
+            // 加载API数据的函数
+            function loadApiData(apiId) {
+                const api = apiData[apiId] || defaultApiData;
+
+                // 克隆模板
+                const clone = template.content.cloneNode(true);
+
+                // 绑定数据
+                const elements = clone.querySelectorAll('[data-bind]');
+                elements.forEach(element => {
+                    const bindKey = element.getAttribute('data-bind');
+
+                    switch (bindKey) {
+                        case 'method-display':
+                            const methodClass = `method-${api.method.toLowerCase()}`;
+                            element.innerHTML = `<span class="method-badge ${methodClass}">${api.method}</span>`;
+                            break;
+                        case 'title':
+                            element.textContent = api.title;
+                            break;
+                        case 'param-description':
+                            element.textContent = api.paramDescription;
+                            break;
+                        case 'params':
+                            // 生成参数表格
+                            let tableHtml = '';
+
+                            if (api.params && api.params.length > 0) {
+                                tableHtml = `
+                                    <thead>
+                                        <tr>
+                                            <th>参数名称</th>
+                                            <th>类型</th>
+                                            <th>说明</th>
+                                            <th>默认值</th>
+                                            <th>示例</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                `;
+
+                                api.params.forEach(param => {
+                                    tableHtml += `
+                                        <tr>
+                                            <td><span class="param-name">${param.name}</span></td>
+                                            <td><span class="param-type">${param.type}</span></td>
+                                            <td>${param.description}</td>
+                                            <td><span class="param-default">${param.defaultValue}</span></td>
+                                            <td><span class="param-example">${param.example}</span></td>
+                                        </tr>
+                                    `;
+                                });
+
+                                tableHtml += '</tbody>';
+                            } else {
+                                tableHtml = '<tbody><tr><td colspan="5" style="text-align: center;">此接口无需参数</td></tr></tbody>';
+                            }
+
+                            element.innerHTML = tableHtml;
+                            break;
+                        case 'code-javascript':
+                            element.innerHTML = api.code.fetch;
+                            applySyntaxHighlighting(element);
+                            break;
+                        case 'response-code':
+                            element.textContent = api.responseCode;
+                            break;
+                        case 'response-type':
+                            element.textContent = api.responseType;
+                            break;
+                        case 'response-json':
+                            element.textContent = api.responseJson;
+                            applyJsonHighlighting(element);
+                            break;
+                        case 'prev-text':
+                            element.textContent = api.prevText;
+                            break;
+                        case 'next-text':
+                            element.textContent = api.nextText;
+                            break;
+                    }
+                });
+
+                // 清空并添加新内容
+                mainContent.innerHTML = '<img src="https://avatar.bdstatic.com/it/u=2664434043,2728946303&fm=3012&app=3012&autime=1756203629&size=b200,200" alt="二维码" class="qr-code-corner">';
+                mainContent.appendChild(clone);
+
+                // 添加代码复制功能
+                setupCodeCopy();
+
+                // 添加语言切换功能
+                setupLanguageTabs(api.code);
+
+                // 添加分页链接事件
+                setupPaginationLinks(apiId);
+            }
+
+            // 设置代码复制功能
+            function setupCodeCopy() {
+                const copyBtn = document.querySelector('.copy-btn');
+                if (copyBtn) {
+                    copyBtn.addEventListener('click', function () {
+                        const codeElement = document.querySelector('.code-content pre');
+                        const codeText = codeElement.textContent;
+
+                        navigator.clipboard.writeText(codeText).then(() => {
+                            const originalText = copyBtn.innerHTML;
+                            copyBtn.innerHTML = '<i class="fas fa-check"></i> 已复制';
+                            copyBtn.style.backgroundColor = '#10b981';
+
+                            setTimeout(() => {
+                                copyBtn.innerHTML = originalText;
+                                copyBtn.style.backgroundColor = '';
+                            }, 2000);
+                        });
+                    });
+                }
+            }
+
+            // 设置语言切换功能
+            function setupLanguageTabs(codeData) {
+                const languageTabs = document.querySelectorAll('.language-tab');
+                const codeContent = document.querySelector('.code-content pre');
+
+                languageTabs.forEach(tab => {
+                    tab.addEventListener('click', function () {
+                        // 移除所有活动状态
+                        languageTabs.forEach(t => t.classList.remove('active'));
+                        // 为当前选项卡添加活动状态
+                        this.classList.add('active');
+
+                        // 切换代码示例
+                        const language = this.textContent.toLowerCase();
+                        let code = '';
+
+                        switch (language) {
+                            case 'jquery':
+                                code = codeData.jquery || '// 暂无示例代码';
+                                break;
+                            case 'fetch':
+                                code = codeData.fetch || '// 暂无示例代码';
+                                break;
+                            case 'python':
+                                code = codeData.python || '# 暂无示例代码';
+                                break;
+                            case 'axios':
+                                code = codeData.axios || '// 暂无示例代码';
+                                break;
+                            default:
+                                code = codeData.fetch || '// 暂无示例代码';
+                        }
+
+                        codeContent.textContent = code;
+                        applySyntaxHighlighting(codeContent);
+                    });
+                });
+            }
+
+            // 设置分页链接
+            function setupPaginationLinks(currentApiId) {
+                const prevLink = document.querySelector('.prev-link');
+                const nextLink = document.querySelector('.next-link');
+
+                // 找到当前API在菜单中的位置
+                let currentMenuItem = null;
+                let allMenuItems = [];
+
+                // 获取所有菜单项
+                document.querySelectorAll('.nav-item').forEach(item => {
+                    const apiId = item.getAttribute('data-api');
+                    allMenuItems.push(apiId);
+                    if (apiId === currentApiId) {
+                        currentMenuItem = item;
+                    }
+                });
+
+                if (prevLink) {
+                    prevLink.addEventListener('click', function (e) {
+                        e.preventDefault();
+
+                        // 查找前一个菜单项
+                        const currentIndex = allMenuItems.indexOf(currentApiId);
+                        if (currentIndex > 0) {
+                            const prevApiId = allMenuItems[currentIndex - 1];
+                            document.querySelector(`[data-api="${prevApiId}"]`).click();
+                        } else {
+                            // 如果是第一个，则回到最后一个
+                            const lastApiId = allMenuItems[allMenuItems.length - 1];
+                            document.querySelector(`[data-api="${lastApiId}"]`).click();
+                        }
+                    });
+                }
+
+                if (nextLink) {
+                    nextLink.addEventListener('click', function (e) {
+                        e.preventDefault();
+
+                        // 查找后一个菜单项
+                        const currentIndex = allMenuItems.indexOf(currentApiId);
+                        if (currentIndex < allMenuItems.length - 1) {
+                            const nextApiId = allMenuItems[currentIndex + 1];
+                            document.querySelector(`[data-api="${nextApiId}"]`).click();
+                        } else {
+                            // 如果是最后一个，则回到第一个
+                            const firstApiId = allMenuItems[0];
+                            document.querySelector(`[data-api="${firstApiId}"]`).click();
+                        }
+                    });
+                }
+            }
+
+            // 简单的语法高亮应用
+            function applySyntaxHighlighting(element) {
+                let code = element.textContent || element.innerText;
+
+                // 转义 HTML 特殊字符
+                code = code.replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;');
+
+                // 按行分割处理
+                const lines = code.split('\n');
+                let processedLines = [];
+
+                for (let line of lines) {
+                    // 处理注释行（以 // 开头）
+                    if (line.trim().startsWith('//') || line.trim().startsWith('#')) {
+                        processedLines.push(`<span class="comment">${line}</span>`);
+                        continue;
+                    }
+
+                    // 处理行内注释
+                    let processedLine = line;
+                    const commentIndex = processedLine.indexOf('//');
+                    let commentPart = '';
+
+                    if (commentIndex !== -1) {
+                        const beforeComment = processedLine.substring(0, commentIndex);
+                        const stringCount = (beforeComment.match(/"/g) || []).length;
+
+                        if (stringCount % 2 === 0) {
+                            commentPart = processedLine.substring(commentIndex);
+                            processedLine = processedLine.substring(0, commentIndex);
+                            commentPart = `<span class="comment">${commentPart}</span>`;
+                        }
+                    }
+
+                    // 处理字符串
+                    processedLine = processedLine.replace(/"([^"\\]*(\\.[^"\\]*)*)"/g, (match) => {
+                        return `<span class="string">${match}</span>`;
+                    });
+
+                    processedLine = processedLine.replace(/'([^'\\]*(\\.[^'\\]*)*)'/g, (match) => {
+                        return `<span class="string">${match}</span>`;
+                    });
+
+                    // JavaScript关键字高亮
+                    const jsKeywords = ['function', 'const', 'let', 'var', 'if', 'else', 'for', 'while', 'return', 'new', 'class', 'extends', 'import', 'export', 'default', 'async', 'await', 'try', 'catch', 'finally', 'throw', 'undefined', 'null', 'true', 'false'];
+
+                    jsKeywords.forEach(keyword => {
+                        const regex = new RegExp(`\\b${keyword}\\b(?![^<]*>)(?![^<]*</span>)`, 'g');
+                        processedLine = processedLine.replace(regex, `<span class="keyword">${keyword}</span>`);
+                    });
+
+                    // 函数高亮
+                    const functionRegex = /\b([a-zA-Z_$][a-zA-Z0-9_$]*)(?=\s*\()/g;
+                    processedLine = processedLine.replace(functionRegex, (match, funcName) => {
+                        if (!jsKeywords.includes(funcName) && !processedLine.includes(`<span class="keyword">${funcName}</span>`)) {
+                            return `<span class="function">${funcName}</span>`;
+                        }
+                        return match;
+                    });
+
+                    // 数字高亮
+                    processedLine = processedLine.replace(/\b\d+\b/g, (match) => {
+                        const position = processedLine.indexOf(match);
+                        const before = processedLine.substring(0, position);
+                        const stringTagsBefore = (before.match(/<span class="string">/g) || []).length;
+                        const stringTagsClosedBefore = (before.match(/<\/span>/g) || []).length;
+
+                        if (stringTagsBefore === stringTagsClosedBefore) {
+                            return `<span class="number">${match}</span>`;
+                        }
+                        return match;
+                    });
+
+                    // 添加回注释部分
+                    processedLine += commentPart;
+                    processedLines.push(processedLine);
+                }
+
+                element.innerHTML = processedLines.join('\n');
+            }
+
+            // JSON语法高亮
+            function applyJsonHighlighting(element) {
+                let json = element.textContent || element.innerText;
+
+                // 转义 HTML 特殊字符
+                json = json.replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;');
+
+                // 先处理字符串，避免嵌套
+                json = json.replace(/"([^"\\]*(\\.[^"\\]*)*)":/g, (match) => {
+                    return `<span class="json-key">${match}</span>`;
+                });
+
+                // 处理字符串值（不在键中的字符串）
+                json = json.replace(/: "([^"\\]*(\\.[^"\\]*)*)"/g, (match, content) => {
+                    return `: <span class="string">"${content}"</span>`;
+                });
+
+                // 布尔值和 null 高亮
+                json = json.replace(/: (true|false|null)/g, ': <span class="keyword">$1</span>');
+
+                // 数字高亮
+                json = json.replace(/: (\d+(?:\.\d+)?)/g, ': <span class="number">$1</span>');
+
+                element.innerHTML = json;
+            }
+        });
+
+    </script>
+
+    <!-- <script>
+        // 访问统计
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?76c659762302d64b673ff78e9f6778be";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script> -->
+    <script>
+        // 核心：用try-catch包裹统计代码，延迟执行避免和React渲染冲突
+        window.onload = function () {
+            try {
+                // 延迟执行：彻底脱离React渲染阶段，减少418触发概率
+                setTimeout(() => {
+                    var _hmt = _hmt || [];
+                    (function () {
+                        var hm = document.createElement("script");
+                        hm.src = "https://hm.baidu.com/hm.js?76c659762302d64b673ff78e9f6778be";
+                        // 改用更稳定的插入方式
+                        document.head.appendChild(hm);
+                    })();
+                }, 500); // 延迟500ms，确保React渲染完成
+            } catch (e) {
+                // 捕获所有统计代码的执行异常，仅打印日志，不阻断页面
+                console.warn("百度统计代码执行异常：", e);
+            }
+        };
+    </script>
 </body>
 
 </html>
