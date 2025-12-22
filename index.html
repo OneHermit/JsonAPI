@@ -703,13 +703,13 @@
                     <p class="subtitle">API 文档 - 支持多层级菜单</p>
                 </div>
                 <div class="api-status">
-                    <!-- 重构广告容器实现，使用更可靠的方案 -->
-                    <script async
-                        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8576294465310211"
-                        crossorigin="anonymous"></script>
                     <!-- 标题头广告 -->
                     <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-8576294465310211"
                         data-ad-slot="8433120171" data-ad-format="auto" data-full-width-responsive="true"></ins>
+
+                    <script async
+                        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8576294465310211"
+                        crossorigin="anonymous"></script>
                     <script>
                         (adsbygoogle = window.adsbygoogle || []).push({});
                     </script>
@@ -932,7 +932,7 @@
                 code: {
                     jquery: `// 获取全部视频 - jQuery示例
 var settings = {
-   "url": "https://m1.apifoxmock.com/m1/7510026-7245733-default/getAllVideos?page=1&size=10",
+   "url": "course/getVideo.json?page=1&size=10",
    "method": "GET",
    "timeout": 0,
 };
@@ -946,7 +946,7 @@ var requestOptions = {
    redirect: 'follow'
 };
 
-fetch("https://m1.apifoxmock.com/m1/7510026-7245733-default/getAllVideos?page=1&size=10", requestOptions)
+fetch("course/getVideo.json?page=1&size=10", requestOptions)
    .then(response => response.text())
    .then(result => console.log(result))
    .catch(error => console.log('error', error));`,
@@ -955,7 +955,7 @@ var axios = require('axios');
 
 var config = {
    method: 'get',
-   url: 'https://m1.apifoxmock.com/m1/7510026-7245733-default/getAllVideos?page=1&size=10',
+   url: 'course/getVideo.json?page=1&size=10',
    headers: { }
 };
 
@@ -969,7 +969,7 @@ import http.client
 conn = http.client.HTTPSConnection("")
 payload = ''
 headers = {}
-conn.request("GET", "https://m1.apifoxmock.com/m1/7510026-7245733-default/getAllVideos?page=1&size=10", payload, headers)
+conn.request("GET", "course/getVideo.json?page=1&size=10", payload, headers)
 res = conn.getresponse()
 data = res.read()
 print(data.decode("utf-8"))`,
@@ -1018,7 +1018,7 @@ print(data.decode("utf-8"))`,
                 code: {
                     jquery: `// 获取搞笑视频 - jQuery示例
 var settings = {
-   "url": "/getGaoXiaoVideos?page=1&size=10",
+   "url": "course/getHaokanVideos.json?page=1&size=10",
    "method": "GET",
    "timeout": 0,
 };
@@ -1032,7 +1032,7 @@ var requestOptions = {
    redirect: 'follow'
 };
 
-fetch("/getGaoXiaoVideos?page=1&size=10", requestOptions)
+fetch("course/getHaokanVideos.json?page=1&size=10", requestOptions)
    .then(response => response.text())
    .then(result => console.log(result))
    .catch(error => console.log('error', error));`,
@@ -1041,7 +1041,7 @@ var axios = require('axios');
 
 var config = {
    method: 'get',
-   url: '/getGaoXiaoVideos?page=1&size=10',
+   url: 'course/getHaokanVideos.json?page=1&size=10',
    headers: { }
 };
 
@@ -1055,7 +1055,7 @@ import http.client
 conn = http.client.HTTPSConnection("")
 payload = ''
 headers = {}
-conn.request("GET", "/getGaoXiaoVideos?page=1&size=10", payload, headers)
+conn.request("GET", "course/getHaokanVideos.json?page=1&size=10", payload, headers)
 res = conn.getresponse()
 data = res.read()
 print(data.decode("utf-8"))`,
