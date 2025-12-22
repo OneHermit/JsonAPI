@@ -63,7 +63,7 @@
             padding: 8px 16px;
             border-radius: 20px;
             font-size: 0.9rem;
-            display: flex;
+            /* display: flex; */
             align-items: center;
             backdrop-filter: blur(5px);
             height: 100px;
@@ -707,29 +707,17 @@
                     <h1>前端开发</h1>
                     <p class="subtitle">API 文档 - 支持多层级菜单</p>
                 </div>
-
                 <div class="api-status">
-                    <!-- 修复广告容器尺寸问题 -->
-                    <div
-                        style="min-width: 300px; min-height: 100px; display: flex; align-items: center; justify-content: center;">
-                        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-8576294465310211"
-                            data-ad-slot="8433120171" data-ad-format="auto" data-full-width-responsive="true">
-                        </ins>
+                    <!-- 重构广告容器实现，使用更可靠的方案 -->
+                    <div id="ads-container"
+                        style="min-width: 320px; min-height: 90px; display: flex; align-items: center; justify-content: center; background-color: rgba(255, 255, 255, 0.1); border-radius: 8px;">
+                        <!-- 广告占位符 -->
+                        <div class="ad-placeholder"
+                            style="text-align: center; color: rgba(255, 255, 255, 0.7); padding: 10px;">
+                            <span>广告位</span>
+                        </div>
                     </div>
                 </div>
-                <script async
-                    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8576294465310211"
-                    crossorigin="anonymous"></script>
-                <script>
-                    // 确保在DOM加载完成后初始化广告
-                    window.addEventListener('load', function () {
-                        try {
-                            (adsbygoogle = window.adsbygoogle || []).push({});
-                        } catch (e) {
-                            console.warn('Adsense error:', e);
-                        }
-                    });
-                </script>
             </div>
         </header>
 
@@ -1979,6 +1967,44 @@ print(data.decode("utf-8"))`
                 json = json.replace(/: (\d+(?:\.\d+)?)/g, ': <span class="number">$1</span>');
 
                 element.innerHTML = json;
+            }
+        });
+
+        // 页面加载完成后初始化广告
+        window.addEventListener('load', function () {
+            try {
+                // 创建广告元素
+                const adContainer = document.getElementById('ads-container');
+                if (adContainer) {
+                    // 清空容器
+                    adContainer.innerHTML = '';
+
+                    // 创建新的广告元素
+                    const adIns = document.createElement('ins');
+                    adIns.className = 'adsbygoogle';
+                    adIns.style.display = 'block';
+                    adIns.style.minHeight = '90px';
+                    adIns.setAttribute('data-ad-client', 'ca-pub-8576294465310211');
+                    adIns.setAttribute('data-ad-slot', '8433120171');
+                    adIns.setAttribute('data-ad-format', 'horizontal');
+                    adIns.setAttribute('data-full-width-responsive', 'false');
+
+                    // 添加广告元素到容器
+                    adContainer.appendChild(adIns);
+
+                    // 加载广告脚本
+                    const script = document.createElement('script');
+                    script.async = true;
+                    script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8576294465310211';
+                    script.crossOrigin = 'anonymous';
+                    script.onload = function () {
+                        // 脚本加载完成后推送广告
+                        (adsbygoogle = window.adsbygoogle || []).push({});
+                    };
+                    document.head.appendChild(script);
+                }
+            } catch (e) {
+                console.warn('Adsense error:', e);
             }
         });
 
